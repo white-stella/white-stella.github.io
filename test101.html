@@ -1,107 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="loging.js" defer></script>
-    <title>Login Form 2.0</title>
-    <style>
-        body {
-            height: 100%;
-            width: 100%;
-            padding: 0;
-            margin: 0;
-            background-color: #cdb4db;
-        }
-        .box1 {
-            background-image: url(https://wallpapercave.com/wp/wp5258873.jpg);
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-origin: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            z-index: -1;
-        }
-        form {
-            background: #d6e8ff;
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            height: 500px;
-            width: 400px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            translate: -50% -50%;
-        }
-        input {
-            height: 30px;
-            width: 100%;
-        }
-        button {
-            height: 30px;
-            width: 50%;
-            margin: 50px;
-        }
-    </style>
+<meta charset="UTF-8" name="viewport" content="width=device-width; initial-scale=1.0"/>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
+<title>Art Gallery</title>
+<style>
+    body {
+        background: #344e41;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    form {
+        background: #588157;
+        height: 500px;
+        width: 400px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    input {
+        height: 50px;
+        width: 90%;
+        margin: 20px;
+        font-size: 40px;
+    }
+    button {
+        height: 50px;
+        font-size: 40px;
+        width: 90%;
+    }
+</style>
 </head>
 <body>
     <form>
-        <h1>Login Form</h1>
-        <input id="email" placeholder="Email" type="email">
-        <input id="password" placeholder="Password" type="password">
-        <button id="submit" type="submit">Login</button>
+        <input type="text" id="username" placeholder="Username">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button type="submit" id="submit">Submit</button>
     </form>
+    
     <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyCF-YCaH1GDvwtP3LICAh_AjceqxidYPbY",
-      authDomain: "chatroom3000-8ce6b.firebaseapp.com",
-      projectId: "chatroom3000-8ce6b",
-      storageBucket: "chatroom3000-8ce6b.appspot.com",
-      messagingSenderId: "426519613725",
-      appId: "1:426519613725:web:86c402345df5bbbbd351f4",
-      measurementId: "G-3JTB7ST906"
-    };
-  
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-
-    //inputs 
-
-    const submit = document.getElementById('submit');
-    submit.addEventListener('click', function(event) {
-        event.preventDefault();
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";        
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";      
+        
+        const firebaseConfig = {
+          apiKey: "AIzaSyCfOdqwlCKwQk8wTAy2Rwz1h_z2L1pDm8s",
+          authDomain: "login-form101.firebaseapp.com",
+          projectId: "login-form101",
+          storageBucket: "login-form101.appspot.com",
+          messagingSenderId: "127378397127",
+          appId: "1:127378397127:web:6c898cb2da67c314f4abe2",
+          databaseURL: "https://login-form101-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+      
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
 
         
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const username = document.getElementById('username').value;
 
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed up 
+            .then((userCredential) => {
+                
             const user = userCredential.user;
-            alert('Working...');
-            // ...
-        })
-        .catch((error) => {
+            alert("User created:", user);
+
+            const uid = user.uid;
+            const userRef = ref(database, 'users/' + uid);
+
+            set(userRef, {
+            email: email,
+            username: username,
+            password: password,
+            last_login: Date.now() 
+            })
+            .then(() => {
+                console.log("User data saved to database");
+            })
+            .catch((error) => {
+                console.error("Error saving user data:", error);
+            });
+            })
+            .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert(errorMessage);
-            // ..
+            console.log("Error creating user:", error);
+            });
         });
-    })
+        
     </script>
+
 </body>
 </html>
